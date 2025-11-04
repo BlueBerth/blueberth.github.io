@@ -90,10 +90,11 @@ function showErrorState() {
 }
 
 function forwardToId(params) {
-  location.href = `/FistaszjoObywatel/id?${params}`;
+  location.href = `/id?${params}`;
 }
 
 const guide = document.querySelector('.guide_holder');
 guide.addEventListener('click', () => {
   guide.classList.toggle('unfolded');
 });
+
