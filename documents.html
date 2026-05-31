@@ -1,0 +1,62 @@
+<head>
+    <title>mObywatel</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="assets/app/documents.css">
+    <link rel="stylesheet" href="assets/app/main.css">
+    <link rel="icon" type="image/x-icon" href="assets/app/images/logo.png">
+    <link rel="apple-touch-icon" href="assets/app/images/logo.png">
+    <link rel="shortcut icon" href="assets/app/images/logo.png">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+</head>
+<body>
+    <div class="bottom_bar">
+        <div class="bottom_bar_grid">
+            <div class="bottom_element_grid" send="documents">
+                <div class="bottom_element_image documents documents_open"></div>
+                <p class="bottom_element_text open">Dokumenty</p>
+            </div>
+            <div class="bottom_element_grid" send="services">
+                <div class="bottom_element_image services"></div>
+                <p class="bottom_element_text">Usługi</p>
+            </div>
+            <div class="bottom_element_grid" send="qr">
+                <div class="bottom_element_image qr"></div>
+                <p class="bottom_element_text">Kod QR</p>
+            </div>
+            <div class="bottom_element_grid" send="more">
+                <div class="bottom_element_image more"></div>
+                <p class="bottom_element_text">Więcej</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="page_top">
+            <img class="main_page_logo" src="assets/app/images/logo_large.png">
+            <img class="main_page_bell" src="assets/app/images/bell.png">
+        </div>
+        <p class="main_title">Dokumenty</p>
+        <div class="button_grid">
+            <p class="main_button">Dostosuj</p>
+            <p class="main_button">Dodaj</p>
+        </div>
+        <div class="card_box" onclick="sendTo('card')">
+            <img class="card_background" src="assets/app/images/card_background.webp">
+            <p class="card_name">mDowód</p>
+            <div class="card_eagle_background">
+                <div class="card_filler"></div>
+                <img class="card_eagle" src="assets/app/images/card_eagle.png">
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/app/bar.js"></script>
+    <script src="assets/app/manifest.js"></script>
+    <script src="assets/cache.js"></script>
+    <script src="assets/app/flow.js"></script>
+</body>
