@@ -264,13 +264,14 @@ window.addEventListener('DOMContentLoaded', () => {
     if(document.getElementById("mothersName")) document.getElementById("mothersName").innerText = "ANNA";
 
     // Ładowanie zdjęcia profilowego z pamięci podręcznej
-    var zdjecie = localStorage.getItem('profil_zdjecie');
+var zdjecie = localStorage.getItem('profil_zdjecie');
     if (zdjecie) {
         var imgContainer = document.querySelector(".id_own_image"); 
         if (imgContainer) {
             imgContainer.style.backgroundImage = "url('" + zdjecie + "')";
             imgContainer.style.backgroundSize = "cover";
             imgContainer.style.backgroundPosition = "center";
+            imgContainer.style.filter = "grayscale(100%)"; // <--- OTO TA NOWA LINIJKA!
         }
     }
 

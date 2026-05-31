@@ -103,9 +103,12 @@ function loadReadyData(result){
 }
 
 function setImage(image){
-    document.querySelector(".id_own_image").style.backgroundImage = `url(${image})`;
+    var imgContainer = document.querySelector(".id_own_image");
+    if (imgContainer) {
+        imgContainer.style.backgroundImage = "url('" + image + "')";
+        imgContainer.style.filter = "grayscale(100%)"; // <--- OTO TA NOWA LINIJKA!
+    }
 }
-
 function setData(id, value){
     document.getElementById(id).innerHTML = value;
 }
