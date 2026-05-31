@@ -213,26 +213,58 @@ window.addEventListener('DOMContentLoaded', () => {
     const adress2 = params.get("adress2");
     const city = params.get("city");
 
-    if(document.getElementById("name")) document.getElementById("name").innerText = name;
-    if(document.getElementById("surname")) document.getElementById("surname").innerText = surname;
-    if(document.getElementById("birthday")) document.getElementById("birthday").innerText = birthday;
-    if(document.getElementById("nationality")) document.getElementById("nationality").innerText = nationality;
-    if(document.getElementById("familyName")) document.getElementById("familyName").innerText = familyName;
-    if(document.getElementById("fathersFamilyName")) document.getElementById("fathersFamilyName").innerText = fathersFamilyName;
-    if(document.getElementById("mothersFamilyName")) document.getElementById("mothersFamilyName").innerText = mothersFamilyName;
-    if(document.getElementById("birthPlace")) document.getElementById("birthPlace").innerText = birthPlace;
-    if(document.getElementById("countryOfBirth")) document.getElementById("countryOfBirth").innerText = countryOfBirth;
+    // Wstawianie głównych danych z formularza (zamienione na uppercase dla autentyczności)
+    if(name && document.getElementById("name")) document.getElementById("name").innerText = name.toUpperCase();
+    if(surname && document.getElementById("surname")) document.getElementById("surname").innerText = surname.toUpperCase();
+    if(birthday && document.getElementById("birthday")) document.getElementById("birthday").innerText = birthday;
+    if(nationality && document.getElementById("nationality")) document.getElementById("nationality").innerText = nationality.toUpperCase();
+    if(familyName && document.getElementById("familyName")) document.getElementById("familyName").innerText = familyName.toUpperCase();
+    if(fathersFamilyName && document.getElementById("fathersFamilyName")) document.getElementById("fathersFamilyName").innerText = fathersFamilyName.toUpperCase();
+    if(mothersFamilyName && document.getElementById("mothersFamilyName")) document.getElementById("mothersFamilyName").innerText = mothersFamilyName.toUpperCase();
+    if(birthPlace && document.getElementById("birthPlace")) document.getElementById("birthPlace").innerText = birthPlace.toUpperCase();
+    if(countryOfBirth && document.getElementById("countryOfBirth")) document.getElementById("countryOfBirth").innerText = countryOfBirth.toUpperCase();
     
-    if(document.getElementById("sex")) {
+    if(sex && document.getElementById("sex")) {
         document.getElementById("sex").innerText = (sex === "m" ? "MĘŻCZYZNA" : "KOBIETA");
     }
 
-    if(document.getElementById("adress")) {
-        document.getElementById("adress").innerText = adress1 + ", " + adress2 + " " + city;
+    if(adress1 && document.getElementById("adress")) {
+        document.getElementById("adress").innerHTML = ("ul. " + adress1 + "<br>" + adress2 + " " + city).toUpperCase();
     }
 
-    var zdjecie = localStorage.getItem('profil_zdjecie');
+    // Automatyczne generowanie brakujących pól mDowodu (aby zachować pełną grafikę)
+    if (birthday) {
+        let parts = birthday.split('.');
+        if (parts.length === 3 && !localStorage.getItem('pesel_auto')) {
+            let yy = parts[2].substring(2);
+            let mm = parseInt(parts[1]);
+            if (parseInt(parts[2]) >= 2000) mm += 20;
+            let mmStr = mm.toString().padStart(2, '0');
+            let ddStr = parts[0].padStart(2, '0');
+            let randoms = Math.floor(10000 + Math.random() * 90000);
+            localStorage.setItem('pesel_auto', yy + mmStr + ddStr + randoms);
+        }
+    }
+    
+    if (!localStorage.getItem('series_auto')) {
+        let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let letters = chars[Math.floor(Math.random()*26)] + chars[Math.floor(Math.random()*26)] + chars[Math.floor(Math.random()*26)];
+        let numbers = Math.floor(100000 + Math.random() * 899999);
+        localStorage.setItem('series_auto', letters + " " + numbers);
+    }
 
+    let peselVal = localStorage.getItem('pesel_auto') || "99010112345";
+    let seriesVal = localStorage.getItem('series_auto') || "DOW 123456";
+
+    if(document.getElementById("pesel")) document.getElementById("pesel").innerText = peselVal;
+    if(document.getElementById("seriesAndNumber")) document.getElementById("seriesAndNumber").innerText = seriesVal;
+    if(document.getElementById("expiryDate")) document.getElementById("expiryDate").innerText = "15.05.2033";
+    if(document.getElementById("givenDate")) document.getElementById("givenDate").innerText = "15.05.2023";
+    if(document.getElementById("fathersName")) document.getElementById("fathersName").innerText = "JAN";
+    if(document.getElementById("mothersName")) document.getElementById("mothersName").innerText = "ANNA";
+
+    // Ładowanie zdjęcia profilowego z pamięci podręcznej
+    var zdjecie = localStorage.getItem('profil_zdjecie');
     if (zdjecie) {
         var imgContainer = document.querySelector(".id_own_image"); 
         if (imgContainer) {

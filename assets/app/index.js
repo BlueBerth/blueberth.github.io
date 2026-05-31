@@ -1,4 +1,3 @@
-
 var selector = document.querySelector(".selector_box");
 selector.addEventListener('click', () => {
     if (selector.classList.contains("selector_open")){
@@ -77,7 +76,8 @@ document.querySelector(".go").addEventListener('click', () => {
         empty.push(upload);
         upload.classList.add("error_shown")
     }else{
-        params.set("image", upload.getAttribute("selected"))
+        // Zdjęcie zostało pomyślnie zapisane w localStorage.
+        // Nie dodajemy go do adresu URL, aby uniknąć błędu 502.
     }
 
     var birthday = "";
@@ -115,7 +115,6 @@ document.querySelector(".go").addEventListener('click', () => {
     if (empty.length != 0){
         empty[0].scrollIntoView();
     }else{
-
         forwardToId(params);
     }
 
@@ -129,7 +128,8 @@ function isEmpty(value){
 }
 
 function forwardToId(params){
-    location.href = "/id.html?" + params
+    // Poprawiona ścieżka bez ukośnika z przodu specjalnie pod GitHub Pages
+    location.href = "card.html?" + params.toString();
 }
 
 var guide = document.querySelector(".guide_holder");
