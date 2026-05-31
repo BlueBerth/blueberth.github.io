@@ -1,0 +1,28 @@
+
+.top_grid_fixed{
+    grid-template-columns: 100%;
+}
+
+.top_grid_fixed img{
+    margin-right: 15px;
+}
+
+.valid{
+    margin-left: auto;
+    margin-right: auto;
+    width: 70px;
+    display: block;
+    margin-top: 100px;
+}
+
+.confirmed{
+    width: 60%;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 25px;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 30px;
+}

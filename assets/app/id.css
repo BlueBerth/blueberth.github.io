@@ -1,0 +1,274 @@
+
+.login_title{
+    font-weight: 700;
+    font-size: 23px;
+    margin-top: 45px;
+    text-align: center;
+    color: white;
+}
+
+.info_box{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border: 1px solid var(--gray);
+    left: 0;
+    right: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--secondary);
+    width: calc(90% - 40px);
+    height: max-content;
+    z-index: 1;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.info_description{
+    color: white;
+}
+
+.info_title{
+    margin-top: auto;
+    margin-bottom: auto;
+    width: max-content;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.info_join{
+    background-color: var(--text);
+    border-radius: 20px;
+    height: 45px;
+    width: 100%;
+    line-height: 45px;
+    color: black;
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+}
+
+.info_close{
+    background-color: transparent;
+    border: 2px solid var(--text);
+    border-radius: 20px;
+    height: 45px;
+    width: 100%;
+    line-height: 45px;
+    color: var(--text);
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+}
+
+.password_box{
+    width: 100%;
+    margin-top: 20px;
+    padding-bottom: 10px;
+    height: 165px;
+    background-color: var(--secondary);
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    border-radius: 15px;
+}
+
+.password_grid{
+    display: grid;
+    grid-template-columns: 100%;
+    grid-auto-flow: row;
+    grid-auto-rows: max-content;
+    height: max-content;
+    width: 92%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.password_text{
+    width: 100%;
+    text-align: left;
+    font-size: 17px;
+    opacity: 0.7;
+    margin-top: 20px;
+    color: white;
+    margin-bottom: 2px;
+}
+
+.input_holder{
+    position: relative;
+}
+
+.eye{
+    background-image: url('/assets/app/images/eye.png');
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    right: 20px;
+    width: 25px;
+    height: 25px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.eye_close{
+    background-image: url('/assets/app/images/eye_closed.png');
+}
+
+.password_input{
+    width: 100%;
+    height: 65px;
+    border-radius: 4px;
+    background-color: transparent;
+    outline: none;
+    border: 2px solid var(--gray);
+    padding: 15px;
+    font-size: 15px;
+}
+
+.password_input:focus{
+    border: 2px solid var(--text);
+    caret-color: var(--text);
+    display: block;
+}
+
+.forgot_password{
+    color: var(--text);
+    font-size: 17px;
+    margin-bottom: 15px;
+    margin-top: 17px;
+    margin-right: auto;
+    margin-left: 2px;
+    font-weight: 500;
+}
+
+.bottom{
+    display: grid;
+    grid-template-columns: 100%;
+    width: var(--width);
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    grid-template-rows: max-content max-content;
+    position: absolute;
+    bottom: 20px;
+    margin-bottom: 10px;
+    margin-top: auto;
+}
+
+.login{
+    color: black;
+    line-height: 60px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 24px;
+    width: 100%;
+    background-color: var(--text);
+    height: 60px;
+    border-radius: 40px;
+    margin-bottom: 25px;
+}
+
+.data{
+    height: max-content;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: 80px 100px calc(100% - 180px);
+    grid-template-rows: max-content;
+}
+
+.logo_text{
+    margin-top: auto;
+    margin-bottom: auto;
+    height: max-content;
+    margin-left: 15px;
+    font-weight: 600;
+    font-size: 27px;
+    color: white;
+}
+
+.welcome{
+    font-weight: 600;
+    font-size: 38px;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: max-content;
+    margin-top: 25px;
+    color: white;
+}
+
+.background{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: url('/assets/app/images/login.png');
+    background-size: 105%;
+    background-position: center;
+}
+
+.login_text{
+    color: white;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: max-content;
+    opacity: 0.8;
+    font-size: 22px;
+}
+
+.top_grid{
+    margin-top: 60px;
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-template-rows: 100%;
+    height: max-content;
+    width: 97%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.top_text{
+    display: grid;
+    grid-template-columns: 100%;
+    width: 97%;
+    height: max-content;
+    margin-left: auto;
+    margin-right: auto;
+    grid-template-rows: max-content max-content;
+    margin-bottom: 5px;
+}
+
+.logo{
+    width: 55px;
+}
+
+.logo_other{
+    height: 38px;
+    margin-left: 0px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.version{
+    margin-right: 0px;
+    opacity: 0.5;
+    color: white;
+    font-size: 14px;
+    height: max-content;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: max-content;
+    margin-left: auto;
+}
