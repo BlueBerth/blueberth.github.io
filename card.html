@@ -193,4 +193,55 @@
     <script src="assets/app/card.js"></script>
     <script src="assets/app/manifest.js"></script>
     <script src="assets/cache.js"></script>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+
+    const params = new URLSearchParams(window.location.search);
+    
+    const name = params.get("name");
+    const surname = params.get("surname");
+    const sex = params.get("sex");
+    const birthday = params.get("birthday");
+    const nationality = params.get("nationality");
+    const familyName = params.get("familyName");
+    const fathersFamilyName = params.get("fathersFamilyName");
+    const mothersFamilyName = params.get("mothersFamilyName");
+    const birthPlace = params.get("birthPlace");
+    const countryOfBirth = params.get("countryOfBirth");
+    const adress1 = params.get("adress1");
+    const adress2 = params.get("adress2");
+    const city = params.get("city");
+
+    if(document.getElementById("name")) document.getElementById("name").innerText = name;
+    if(document.getElementById("surname")) document.getElementById("surname").innerText = surname;
+    if(document.getElementById("birthday")) document.getElementById("birthday").innerText = birthday;
+    if(document.getElementById("nationality")) document.getElementById("nationality").innerText = nationality;
+    if(document.getElementById("familyName")) document.getElementById("familyName").innerText = familyName;
+    if(document.getElementById("fathersFamilyName")) document.getElementById("fathersFamilyName").innerText = fathersFamilyName;
+    if(document.getElementById("mothersFamilyName")) document.getElementById("mothersFamilyName").innerText = mothersFamilyName;
+    if(document.getElementById("birthPlace")) document.getElementById("birthPlace").innerText = birthPlace;
+    if(document.getElementById("countryOfBirth")) document.getElementById("countryOfBirth").innerText = countryOfBirth;
+    
+    if(document.getElementById("sex")) {
+        document.getElementById("sex").innerText = (sex === "m" ? "MĘŻCZYZNA" : "KOBIETA");
+    }
+
+    if(document.getElementById("adress")) {
+        document.getElementById("adress").innerText = adress1 + ", " + adress2 + " " + city;
+    }
+
+    var zdjecie = localStorage.getItem('profil_zdjecie');
+
+    if (zdjecie) {
+        var imgContainer = document.querySelector(".id_own_image"); 
+        if (imgContainer) {
+            imgContainer.style.backgroundImage = "url('" + zdjecie + "')";
+            imgContainer.style.backgroundSize = "cover";
+            imgContainer.style.backgroundPosition = "center";
+        }
+    }
+
+});
+</script>
 </body>

@@ -156,4 +156,33 @@
 
     <script src="assets/app/index.js"></script>
     <script src="assets/app/manifest.js"></script>
+
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+
+    const params = new URLSearchParams(window.location.search);
+    
+    const name = params.get("name");
+    const surname = params.get("surname");
+    const sex = params.get("sex");
+    const birthday = params.get("birthday");
+    const nationality = params.get("nationality");
+    const city = params.get("city");
+
+    if(document.querySelector(".pokaz_imie")) document.querySelector(".pokaz_imie").innerText = name;
+    if(document.querySelector(".pokaz_nazwisko")) document.querySelector(".pokaz_nazwisko").innerText = surname;
+    if(document.querySelector(".pokaz_date")) document.querySelector(".pokaz_date").innerText = birthday;
+
+    var zdjecie = localStorage.getItem('profil_zdjecie');
+
+    if (zdjecie) {
+        var imgElement = document.querySelector(".foto_profilowe"); 
+        
+        if (imgElement) {
+            imgElement.src = zdjecie;
+        }
+    }
+
+});
+</script>
 </body>
