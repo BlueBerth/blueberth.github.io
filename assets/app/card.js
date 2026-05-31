@@ -17,6 +17,9 @@ var imageReloadEvent = (image) => {
     setImage(image);
 }
 
+const zdjecie = localStorage.getItem('profil_zdjecie');
+if (zdjecie) setImage(zdjecie);
+
 var updateText = document.querySelector(".bottom_update_value");
 updateText.innerHTML = localStorage.getItem("update");
 
