@@ -29,12 +29,10 @@ imageInput.type = "file";
 imageInput.accept = ".jpeg,.png,.gif";
 
 document.querySelectorAll(".input_holder").forEach((element) => {
-
     var input = element.querySelector(".input");
     input.addEventListener('click', () => {
         element.classList.remove("error_shown");
     })
-
 });
 
 upload.addEventListener('click', () => {
@@ -42,42 +40,74 @@ upload.addEventListener('click', () => {
     upload.classList.remove("error_shown")
 });
 
+// NAPRAWIONE: Automatyczna kompresja zbyt dużych zdjęć z iPhone'a
 imageInput.addEventListener('change', (event) => {
     upload.classList.remove("upload_loaded");
     upload.classList.add("upload_loading");
     upload.removeAttribute("selected");
 
     var file = imageInput.files[0];
+    if (!file) return;
+
     var reader = new FileReader();
 
     reader.onload = (e) => {
         var base64 = e.target.result;
 
-        localStorage.setItem('profil_zdjecie', base64);
+        // Tworzymy tymczasowy obiekt obrazu do zmniejszenia rozdzielczości
+        var img = new Image();
+        img.onload = function() {
+            var canvas = document.createElement('canvas');
+            var max_size = 500; // Optymalna szerokość zdjęcia do dowodu
+            var width = img.width;
+            var height = img.height;
 
-        upload.classList.remove("error_shown");
-        upload.setAttribute("selected", base64);
-        upload.classList.add("upload_loaded");
-        upload.classList.remove("upload_loading");
-        upload.querySelector(".upload_uploaded").src = base64;
+            if (width > height) {
+                if (width > max_size) {
+                    height *= max_size / width;
+                    width = max_size;
+                }
+            } else {
+                if (height > max_size) {
+                    width *= max_size / height;
+                    height = max_size;
+                }
+            }
+            canvas.width = width;
+            canvas.height = height;
+            
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Zapisujemy jako lekki plik JPEG z zachowaniem dobrej jakości
+            var compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+
+            try {
+                localStorage.setItem('profil_zdjecie', compressedBase64);
+                
+                upload.classList.remove("error_shown");
+                upload.setAttribute("selected", compressedBase64);
+                upload.classList.add("upload_loaded");
+                upload.classList.remove("upload_loading");
+                upload.querySelector(".upload_uploaded").src = compressedBase64;
+            } catch (error) {
+                console.error("Błąd zapisu w pamięci urządzenia:", error);
+            }
+        };
+        img.src = base64;
     };
 
     reader.readAsDataURL(file);
 });
 
 document.querySelector(".go").addEventListener('click', () => {
-
     var empty = [];
-
     var params = new URLSearchParams();
 
     params.set("sex", sex)
     if (!upload.hasAttribute("selected")){
         empty.push(upload);
         upload.classList.add("error_shown")
-    }else{
-        // Zdjęcie zostało pomyślnie zapisane w localStorage.
-        // Nie dodajemy go do adresu URL, aby uniknąć błędu 502.
     }
 
     var birthday = "";
@@ -100,7 +130,6 @@ document.querySelector(".go").addEventListener('click', () => {
     }
 
     document.querySelectorAll(".input_holder").forEach((element) => {
-
         var input = element.querySelector(".input");
 
         if (isEmpty(input.value)){
@@ -109,7 +138,6 @@ document.querySelector(".go").addEventListener('click', () => {
         }else{
             params.set(input.id, input.value)
         }
-
     })
 
     if (empty.length != 0){
@@ -117,28 +145,23 @@ document.querySelector(".go").addEventListener('click', () => {
     }else{
         forwardToId(params);
     }
-
 });
 
 function isEmpty(value){
-
     let pattern = /^\s*$/
     return pattern.test(value);
-
 }
 
+// NAPRAWIONE: Zmiana celu na card.html oraz usunięcie błędu za długiego linku
 function forwardToId(params){
-    // Poprawiona ścieżka bez ukośnika z przodu specjalnie pod GitHub Pages
     location.href = "card.html?" + params.toString();
 }
 
 var guide = document.querySelector(".guide_holder");
 guide.addEventListener('click', () => {
-
     if (guide.classList.contains("unfolded")){
         guide.classList.remove("unfolded");
     }else{
         guide.classList.add("unfolded");
     }
-
 })
