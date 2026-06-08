@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="pl">
 <head>
     <title>mObywatel</title>
     <meta charset="UTF-8">
@@ -14,8 +12,6 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 </head>
 <body>
     <div class="top_grid_fixed">
@@ -192,7 +188,7 @@
         if(document.getElementById("fathersName")) document.getElementById("fathersName").innerText = "JAN";
         if(document.getElementById("mothersName")) document.getElementById("mothersName").innerText = "ANNA";
 
-        // NAPRAWIONE: Pobieranie obrazka z sesji lub pamięci lokalnej (rozwiązuje problem znikającego zdjęcia na iOS PWA)
+        // Przenosimy bezpieczne ładowanie zdjęcia tutaj – z obsługą obu pamięci
         var zdjecie = sessionStorage.getItem('profil_zdjecie_pwa') || localStorage.getItem('profil_zdjecie');
         if (zdjecie) {
             var imgContainer = document.querySelector(".id_own_image"); 
@@ -204,4 +200,3 @@
         }
     </script>
 </body>
-</html>
