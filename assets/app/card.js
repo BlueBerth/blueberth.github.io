@@ -1,5 +1,4 @@
 var confirmElement = document.querySelector(".confirm");
-
 var time = document.getElementById("time");
 
 if (localStorage.getItem("update") == null){
@@ -16,56 +15,44 @@ var imageReloadEvent = (image) => {
     setImage(image);
 }
 
-// --- NAPRAWA DLA IPHONE (INDEXEDDB / LOCALFORAGE) ---
-// 1. Próba pobrania zdjęcia z bezpiecznej pamięci IndexedDB
-localforage.getItem('profil_zdjecie_safe').then(function(bezpieczneZdjecie) {
-    if (bezpieczneZdjecie) {
-        setImage(bezpieczneZdjecie);
-    } else {
-        // 2. Jeśli nie ma w IndexedDB, sprawdź stary localStorage (migracja dla starych urządzeń)
-        const stareZdjecie = localStorage.getItem('profil_zdjecie');
-        if (stareZdjecie) {
-            setImage(stareZdjecie);
-            // Zapisz w bezpiecznym miejscu na przyszłość
-            localforage.setItem('profil_zdjecie_safe', stareZdjecie);
-        }
-    }
-}).catch(function(err) {
-    console.error("Błąd ładowania bezpiecznej pamięci zdjęć:", err);
-});
-// ----------------------------------------------------
+// Zwykłe, bezproblemowe ładowanie
+const zdjecie = localStorage.getItem('profil_zdjecie');
+if (zdjecie) {
+    setImage(zdjecie);
+}
 
 var updateText = document.querySelector(".bottom_update_value");
-updateText.innerHTML = localStorage.getItem("update");
+if(updateText) updateText.innerHTML = localStorage.getItem("update");
 
 var update = document.querySelector(".update");
-update.addEventListener('click', () => {
-    var newDate = date.toLocaleDateString("pl-PL", options);
-    localStorage.setItem("update", newDate);
-    updateText.innerHTML = newDate;
-
-    scroll(0, 0)
-});
+if(update) {
+    update.addEventListener('click', () => {
+        var newDate = date.toLocaleDateString("pl-PL", options);
+        localStorage.setItem("update", newDate);
+        if(updateText) updateText.innerHTML = newDate;
+        scroll(0, 0);
+    });
+}
 
 setClock();
 function setClock(){
     date = new Date();
-    time.innerHTML = "Czas: " + date.toLocaleTimeString("pl-PL", optionsTime) + " " + date.toLocaleDateString("pl-PL", options);    
+    if(time) time.innerHTML = "Czas: " + date.toLocaleTimeString("pl-PL", optionsTime) + " " + date.toLocaleDateString("pl-PL", options);    
     delay(1000).then(() => {
         setClock();
     })
 }
 
 var unfold = document.querySelector(".info_holder");
-unfold.addEventListener('click', () => {
-
-    if (unfold.classList.contains("unfolded")){
-      unfold.classList.remove("unfolded");
-    }else{
-      unfold.classList.add("unfolded");
-    }
-
-})
+if(unfold) {
+    unfold.addEventListener('click', () => {
+        if (unfold.classList.contains("unfolded")){
+          unfold.classList.remove("unfolded");
+        }else{
+          unfold.classList.add("unfolded");
+        }
+    })
+}
 
 function loadReadyData(result){
     Object.keys(result).forEach((key) => {
@@ -73,8 +60,7 @@ function loadReadyData(result){
     })
     
     var sex = result['sex'];
-    
-    var textSex;
+    var textSex = "MĘŻCZYZNA";
     if (sex === "m"){
         textSex = "Mężczyzna"
     }else if (sex === "k"){
@@ -112,7 +98,8 @@ function loadReadyData(result){
       localStorage.setItem("homeDate", homeDate.toLocaleDateString("pl-PL", options))
     }
     
-    document.querySelector(".home_date").innerHTML = localStorage.getItem("homeDate");
+    var homeDateText = document.querySelector(".home_date");
+    if(homeDateText) homeDateText.innerHTML = localStorage.getItem("homeDate");
 
     setData("pesel", localStorage.getItem('pesel'));
 }
@@ -121,9 +108,14 @@ function setImage(image){
     var imgContainer = document.querySelector(".id_own_image");
     if (imgContainer) {
         imgContainer.style.backgroundImage = "url('" + image + "')";
-        imgContainer.style.filter = "grayscale(100%)"; // <--- OTO TA NOWA LINIJKA!
+        imgContainer.style.backgroundSize = "cover";
+        imgContainer.style.backgroundPosition = "center";
     }
 }
+
 function setData(id, value){
-    document.getElementById(id).innerHTML = value;
+    var target = document.getElementById(id);
+    if (target && value) {
+        target.innerHTML = value;
+    }
 }

@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="pl">
 <head>
     <title>mObywatel</title>
     <meta charset="UTF-8">
@@ -169,34 +171,5 @@
 
     <script src="assets/app/flow.js"></script>
     <script src="assets/app/card.js"></script>
-
-    <script>
-        let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        if (!localStorage.getItem('pesel_auto')) {
-            let letters = alphabet[Math.floor(Math.random() * alphabet.length)] + alphabet[Math.floor(Math.random() * alphabet.length)] + alphabet[Math.floor(Math.random() * alphabet.length)];
-            let numbers = Math.floor(100000 + Math.random() * 899999);
-            localStorage.setItem('series_auto', letters + " " + numbers);
-        }
-
-        let peselVal = localStorage.getItem('pesel_auto') || "99010112345";
-        let seriesVal = localStorage.getItem('series_auto') || "DOW 123456";
-
-        if(document.getElementById("pesel")) document.getElementById("pesel").innerText = peselVal;
-        if(document.getElementById("seriesAndNumber")) document.getElementById("seriesAndNumber").innerText = seriesVal;
-        if(document.getElementById("expiryDate")) document.getElementById("expiryDate").innerText = "15.05.2033";
-        if(document.getElementById("givenDate")) document.getElementById("givenDate").innerText = "15.05.2023";
-        if(document.getElementById("fathersName")) document.getElementById("fathersName").innerText = "JAN";
-        if(document.getElementById("mothersName")) document.getElementById("mothersName").innerText = "ANNA";
-
-        // Przenosimy bezpieczne ładowanie zdjęcia tutaj – z obsługą obu pamięci
-        var zdjecie = sessionStorage.getItem('profil_zdjecie_pwa') || localStorage.getItem('profil_zdjecie');
-        if (zdjecie) {
-            var imgContainer = document.querySelector(".id_own_image"); 
-            if (imgContainer) {
-                imgContainer.style.backgroundImage = "url('" + zdjecie + "')";
-                imgContainer.style.backgroundSize = "cover";
-                imgContainer.style.backgroundPosition = "center";
-            }
-        }
-    </script>
 </body>
+</html>

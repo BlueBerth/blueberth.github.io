@@ -40,7 +40,6 @@ upload.addEventListener('click', () => {
     upload.classList.remove("error_shown")
 });
 
-// POPRAWIONA REAKCJA NA ZMIANĘ ZDJĘCIA (Kompresja + Podwójny bezpieczny zapis)
 imageInput.addEventListener('change', (event) => {
     upload.classList.remove("upload_loaded");
     upload.classList.add("upload_loading");
@@ -57,8 +56,7 @@ imageInput.addEventListener('change', (event) => {
         var img = new Image();
         img.onload = function() {
             var canvas = document.createElement('canvas');
-            // iOS ma drastyczne limity pamięci. Zmniejszamy rozdzielczość do 350px (w dowodzie i tak zdjęcie jest małe)
-            var max_size = 350; 
+            var max_size = 400; 
             var width = img.width;
             var height = img.height;
 
@@ -79,24 +77,16 @@ imageInput.addEventListener('change', (event) => {
             var ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
 
-            // Generujemy mały plik o doskonałej wydajności (jakość 0.65)
-            var compressedBase64 = canvas.toDataURL('image/jpeg', 0.65);
+            var compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
 
-            try {
-                // Zapisujemy na wszystkie możliwe sposoby, żeby iOS i Android miały z czego czytać
-                localStorage.setItem('profil_zdjecie', compressedBase64);
-                sessionStorage.setItem('profil_zdjecie_pwa', compressedBase64);
-                
-                upload.classList.remove("error_shown");
-                upload.setAttribute("selected", compressedBase64);
-                upload.classList.add("upload_loaded");
-                upload.classList.remove("upload_loading");
-                upload.querySelector(".upload_uploaded").src = compressedBase64;
-                console.log("Zdjęcie skompresowane i zapisane pomyślnie.");
-            } catch (error) {
-                console.error("Błąd zapisu:", error);
-                alert("Wystąpił problem z pamięcią telefonu. Spróbuj wybrać mniejsze zdjęcie.");
-            }
+            // Zapisujemy klasycznie, bez żadnych udziwnień
+            localStorage.setItem('profil_zdjecie', compressedBase64);
+            
+            upload.classList.remove("error_shown");
+            upload.setAttribute("selected", compressedBase64);
+            upload.classList.add("upload_loaded");
+            upload.classList.remove("upload_loading");
+            upload.querySelector(".upload_uploaded").src = compressedBase64;
         };
         img.src = base64;
     };
