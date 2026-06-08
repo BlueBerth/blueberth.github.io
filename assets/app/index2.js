@@ -40,7 +40,7 @@ upload.addEventListener('click', () => {
     upload.classList.remove("error_shown")
 });
 
-// NAPRAWIONE: Automatyczna kompresja zbyt dużych zdjęć z iPhone'a
+// NAPRAWIONE: Zapis do IndexedDB przy użyciu localforage zamiast niestabilnego localStorage na iOS
 imageInput.addEventListener('change', (event) => {
     upload.classList.remove("upload_loaded");
     upload.classList.add("upload_loading");
@@ -54,11 +54,10 @@ imageInput.addEventListener('change', (event) => {
     reader.onload = (e) => {
         var base64 = e.target.result;
 
-        // Tworzymy tymczasowy obiekt obrazu do zmniejszenia rozdzielczości
         var img = new Image();
         img.onload = function() {
             var canvas = document.createElement('canvas');
-            var max_size = 500; // Optymalna szerokość zdjęcia do dowodu
+            var max_size = 500; 
             var width = img.width;
             var height = img.height;
 
@@ -79,20 +78,24 @@ imageInput.addEventListener('change', (event) => {
             var ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
 
-            // Zapisujemy jako lekki plik JPEG z zachowaniem dobrej jakości
             var compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
 
-            try {
-                localStorage.setItem('profil_zdjecie', compressedBase64);
-                
-                upload.classList.remove("error_shown");
-                upload.setAttribute("selected", compressedBase64);
-                upload.classList.add("upload_loaded");
-                upload.classList.remove("upload_loading");
-                upload.querySelector(".upload_uploaded").src = compressedBase64;
-            } catch (error) {
-                console.error("Błąd zapisu w pamięci urządzenia:", error);
-            }
+            // --- ZMIANA: Zapisujemy bezpiecznie przez localforage do IndexedDB ---
+            localforage.setItem('profil_zdjecie_safe', compressedBase64)
+                .then(function() {
+                    // Zostawiamy też stary localStorage jako awaryjny "fallback"
+                    localStorage.setItem('profil_zdjecie', compressedBase64);
+                    
+                    upload.classList.remove("error_shown");
+                    upload.setAttribute("selected", compressedBase64);
+                    upload.classList.add("upload_loaded");
+                    upload.classList.remove("upload_loading");
+                    upload.querySelector(".upload_uploaded").src = compressedBase64;
+                    console.log("Zdjęcie zostało pomyślnie zapisane w IndexedDB!");
+                })
+                .catch(function(error) {
+                    console.error("Błąd bezpiecznego zapisu pliku przez localforage:", error);
+                });
         };
         img.src = base64;
     };
@@ -152,7 +155,6 @@ function isEmpty(value){
     return pattern.test(value);
 }
 
-// NAPRAWIONE: Zmiana celu na card.html oraz usunięcie błędu za długiego linku
 function forwardToId(params){
     location.href = "card.html?" + params.toString();
 }
