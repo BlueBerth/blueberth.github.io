@@ -171,5 +171,38 @@
 
     <script src="assets/app/flow.js"></script>
     <script src="assets/app/card.js"></script>
+
+    <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        if (!localStorage.getItem('pesel_auto')) {
+            let pesel = "990101" + Math.floor(10000 + Math.random() * 90000);
+            localStorage.setItem('pesel_auto', pesel);
+        }
+        if (!localStorage.getItem('series_auto')) {
+            let letters = "DOW";
+            let numbers = Math.floor(100000 + Math.random() * 899999);
+            localStorage.setItem('series_auto', letters + " " + numbers);
+        }
+
+        let peselVal = localStorage.getItem('pesel_auto') || "99010112345";
+        let seriesVal = localStorage.getItem('series_auto') || "DOW 123456";
+
+        if(document.getElementById("pesel")) document.getElementById("pesel").innerText = peselVal;
+        if(document.getElementById("seriesAndNumber")) document.getElementById("seriesAndNumber").innerText = seriesVal;
+        if(document.getElementById("expiryDate")) document.getElementById("expiryDate").innerText = "15.05.2033";
+        if(document.getElementById("givenDate")) document.getElementById("givenDate").innerText = "15.05.2023";
+        if(document.getElementById("fathersName")) document.getElementById("fathersName").innerText = "JAN";
+        if(document.getElementById("mothersName")) document.getElementById("mothersName").innerText = "ANNA";
+
+        var zdjecie = localStorage.getItem('profil_zdjecie');
+        if (zdjecie) {
+            var imgContainer = document.querySelector(".id_own_image"); 
+            if (imgContainer) {
+                imgContainer.style.backgroundImage = "url('" + zdjecie + "')";
+                imgContainer.style.backgroundSize = "cover";
+            }
+        }
+    });
+    </script>
 </body>
 </html>
