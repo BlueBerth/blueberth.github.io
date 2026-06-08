@@ -40,7 +40,7 @@ upload.addEventListener('click', () => {
     upload.classList.remove("error_shown")
 });
 
-// NAPRAWIONE: Zapis do IndexedDB przy użyciu localforage zamiast niestabilnego localStorage na iOS
+// WERSJA BEZ BIBLIOTEK: Kompresujemy zdjęcie do mikroskopijnego rozmiaru i zapisujemy klasycznie
 imageInput.addEventListener('change', (event) => {
     upload.classList.remove("upload_loaded");
     upload.classList.add("upload_loading");
@@ -57,7 +57,8 @@ imageInput.addEventListener('change', (event) => {
         var img = new Image();
         img.onload = function() {
             var canvas = document.createElement('canvas');
-            var max_size = 500; 
+            // Zmniejszamy mocniej max_size (do 400px), żeby plik ważył ekstremalnie mało i iOS go nie odrzucił
+            var max_size = 400; 
             var width = img.width;
             var height = img.height;
 
@@ -78,24 +79,24 @@ imageInput.addEventListener('change', (event) => {
             var ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
 
-            var compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+            // Jakość 0.7 - zdjęcie nadal wygląda super na ekranie telefonu, a zajmuje ułamek pamięci
+            var compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
 
-            // --- ZMIANA: Zapisujemy bezpiecznie przez localforage do IndexedDB ---
-            localforage.setItem('profil_zdjecie_safe', compressedBase64)
-                .then(function() {
-                    // Zostawiamy też stary localStorage jako awaryjny "fallback"
-                    localStorage.setItem('profil_zdjecie', compressedBase64);
-                    
-                    upload.classList.remove("error_shown");
-                    upload.setAttribute("selected", compressedBase64);
-                    upload.classList.add("upload_loaded");
-                    upload.classList.remove("upload_loading");
-                    upload.querySelector(".upload_uploaded").src = compressedBase64;
-                    console.log("Zdjęcie zostało pomyślnie zapisane w IndexedDB!");
-                })
-                .catch(function(error) {
-                    console.error("Błąd bezpiecznego zapisu pliku przez localforage:", error);
-                });
+            try {
+                // Zapisujemy pod obydwoma kluczami, żeby card.js na pewno to odczytał
+                localStorage.setItem('profil_zdjecie', compressedBase64);
+                localStorage.setItem('profil_zdjecie_safe', compressedBase64);
+                
+                upload.classList.remove("error_shown");
+                upload.setAttribute("selected", compressedBase64);
+                upload.classList.add("upload_loaded");
+                upload.classList.remove("upload_loading");
+                upload.querySelector(".upload_uploaded").src = compressedBase64;
+                console.log("Zapisano skompresowane zdjęcie!");
+            } catch (error) {
+                console.error("Błąd zapisu:", error);
+                alert("Zdjęcie jest za duże, spróbuj wybrać inne lub mniejsze.");
+            }
         };
         img.src = base64;
     };
