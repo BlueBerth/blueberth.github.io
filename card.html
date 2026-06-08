@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="pl">
 <head>
     <title>mObywatel</title>
     <meta charset="UTF-8">
@@ -12,6 +14,8 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
 </head>
 <body>
     <div class="top_grid_fixed">
@@ -20,261 +24,184 @@
             <p onclick="sendTo('documents')" class="back_text_fixed">Wróć</p>
         </div>
         <p class="title_text_fixed">mDowód</p>
-        <img src="assets/app/images/help.png" class="help_img_fixed">
     </div>
-    <div class="bottom_bar">
-        <div class="bottom_bar_grid">
-            <div class="bottom_element_grid" send="documents">
-                <div class="bottom_element_image documents_open"></div>
-                <p class="bottom_element_text open">Dokumenty</p>
+
+    <div class="top_slide_bar">
+        <div class="inner_slide_bar">
+            <div onclick="sendTo('documents')" class="left_slide_bar">
+                <img class="back_img_fixed_slide" src="assets/app/images/back_blue.png">
+                <p class="back_text_fixed_slide">Wróć</p>
             </div>
-            <div class="bottom_element_grid" send="services">
-                <div class="bottom_element_image services"></div>
-                <p class="bottom_element_text">Usługi</p>
-            </div>
-            <div class="bottom_element_grid" send="qr">
-                <div class="bottom_element_image qr"></div>
-                <p class="bottom_element_text">Kod QR</p>
-            </div>
-            <div class="bottom_element_grid" send="more">
-                <div class="bottom_element_image more"></div>
-                <p class="bottom_element_text">Więcej</p>
-            </div>
+            <p class="middle_slide_bar">mDowód</p>
         </div>
     </div>
-    <div class="container">
-        <p class="time_text" id="time"></p>
-        <div class="id_wrapper">
-            <div class="id_image_data">
-                <img draggable="false" class="id_image" src="assets/app/images/plate.png">
-                <div class="inset">
-        
-                </div>
+
+    <div class="box_container">
+        <div class="top_status_bar">
+            <div class="left_status">
+                <img src="assets/app/images/ok.png" class="ok_img">
+                <p class="status_text">Dokument ważny</p>
+            </div>
+            <div class="update">
+                <p class="update_text">Aktualizuj</p>
+            </div>
+        </div>
+
+        <div class="id_box">
+            <div class="main_id_grid">
                 <div class="id_own_image"></div>
-                <img draggable="false" src="assets/app/images/flag.webp" class="flag_video">
-                <img draggable="false" src="assets/app/images/eagle.gif" class="eagle_video">
-                <p class="eagle_text">Rzeczpospolita<br>Polska</p>
-                <div class="id_data_grid">
-                    <div class="data_holder">
-                        <p class="data_title firstname" id="name"></p>
-                        <p class="data_value">Imię (imiona)</p>
-                    </div>
-                    <div class="data_holder">
-                        <p class="data_title surname" id="surname"></p>
-                        <p class="data_value">Nazwisko</p>
-                    </div>
-                    <div class="data_holder">
-                        <p class="data_title" id="nationality"></p>
-                        <p class="data_value">Obywatelstwo</p>
-                    </div>
-                    <div class="data_holder">
-                        <p class="data_title" id="birthday"></p>
-                        <p class="data_value">Data urodzenia</p>
-                    </div>
-                    <div class="data_holder">
-                        <p class="data_title" id="pesel"></p>
-                        <p class="data_value">Numer PESEL</p>
-                    </div>
+                <div class="id_flag_grid">
+                    <img src="assets/app/images/pl_flag.png" class="pl_flag">
+                    <img src="assets/app/images/ue_flag.png" class="ue_flag">
+                </div>
+                <div class="id_data_holder">
+                    <span class="id_label">Nazwisko</span>
+                    <p id="surname" class="id_value"></p>
+
+                    <span class="id_label">Imię (imiona)</span>
+                    <p id="name" class="id_value"></p>
+
+                    <span class="id_label">Obywatelstwo</span>
+                    <p id="nationality" class="id_value"></p>
+
+                    <span class="id_label">Numer PESEL</span>
+                    <p id="pesel" class="id_value"></p>
+
+                    <span class="id_label">Data urodzenia</span>
+                    <p id="birthday" class="id_value"></p>
                 </div>
             </div>
-            <div class="id_bottom">
-                <div class="bottom_grid">
-                    <img class="bottom_image" src="assets/app/images/valid.png">
-                    <p class="bottom_text" style="color: #16be2d; font-weight: 600; font-size: 16px; margin-left: 15px;">Dokument ważny</p>
+            <div class="bottom_id_grid">
+                <div class="bottom_inner">
+                    <span class="id_label">Seria i numer</span>
+                    <p id="seriesAndNumber" class="id_value"></p>
                 </div>
-            </div>
-        </div>
-        <div class="under_container">
-            <div class="under_grid">
-                <div class="under_icon" onclick="sendTo('scan', 'card')">
-                    <div class="under_image_circle">
-                        <img class="under_image" src="assets/app/images/confirm.png">
-                    </div>
-                    <p class="under_text">Potwierdź swoje dane</p>
-                </div>
-                <div class="under_icon" onclick="sendTo('document')">
-                    <div class="under_image_circle">
-                        <img class="under_image" src="assets/app/images/id_data.png">
-                    </div>
-                    <p class="under_text">Dane dowodu osobistego</p>
-                </div>
-                <div class="under_icon" onclick="sendTo('pesel')">
-                    <div class="under_image_circle">
-                        <img class="under_image" src="assets/app/images/lock.png">
-                    </div>
-                    <p class="under_text">Zastrzeż PESEL</p>
-                </div>
-                <div class="under_icon" onclick="sendTo('shortcuts')">
-                    <div class="under_image_circle">
-                        <img class="under_image" src="assets/app/images/more.png">
-                    </div>
-                    <p class="under_text">Pozostałe skróty</p>
-                </div>
-            </div>
-        </div>
-        <div class="confirm_info">
-            <div class="confirm_box">
-                <p class="box_top">Seria i numer mDowodu</p>
-                <p class="box_value box_highlight" id="seriesAndNumber"></p>
-                <button class="main_button_filled">Kopiuj</button>
-                <p class="box_description">Dane mDowodu i dowodu osobistego są inne - to dwa różne dokumenty.</p>
-            </div>
-            <div class="confirm_box">
-                <p class="box_top">Termin ważności</p>
-                <p class="box_value" id="expiryDate"></p>
-            </div>
-            <div class="confirm_box">
-                <p class="box_top">Data wydania</p>
-                <p class="box_value" id="givenDate"></p>
-            </div>
-            <div class="confirm_box">
-                <p class="box_top">Imię ojca</p>
-                <p class="box_value" id="fathersName"></p>
-            </div>
-            <div class="confirm_box" style="border: none;">
-                <p class="box_top">Imię matki</p>
-                <p class="box_value" id="mothersName"></p>
-            </div>
-        </div>
-        <div class="other_grid">
-            <div class="bottom_holder info_holder">
-                <div class="bottom_grid">
-                    <p class="bottom_text" style="margin-left: 0px;">Twoje dodatkowe dane</p>
-                </div>
-                <img class="action_arrow" src="assets/app/images/arrow_white.png">
-                <div class="additional_holder">
-                    <div class="additional_grid">
-                        <p class="additional_title">Nazwisko rodowe</p>
-                        <p class="additional_subtitle" id="familyName"></p>
-                    </div>
-                    <div class="additional_grid">
-                        <p class="additional_title">Płeć</p>
-                        <p class="additional_subtitle" id="sex"></p>
-                    </div>
-                    <div class="additional_grid">
-                        <p class="additional_title">Nazwisko rodowe ojca</p>
-                        <p class="additional_subtitle" id="fathersFamilyName"></p>
-                    </div>
-                    <div class="additional_grid">
-                        <p class="additional_title">Nazwisko rodowe matki</p>
-                        <p class="additional_subtitle" id="mothersFamilyName"></p>
-                    </div>
-                    <div class="additional_grid">
-                        <p class="additional_title">Miejsce urodzenia</p>
-                        <p class="additional_subtitle" id="birthPlace"></p>
-                    </div>
-                    <div class="additional_grid">
-                        <p class="additional_title">Kraj urodzenia</p>
-                        <p class="additional_subtitle" id="countryOfBirth"></p>
-                    </div>
-                    <div class="additional_grid">
-                        <p class="additional_title">Adres zameldowania na pobyt stały</p>
-                        <p class="additional_subtitle" id="adress"></p>
-                    </div>
-                    <div class="additional_grid" style="border-bottom: none; margin-bottom: 0px;">
-                        <p class="additional_title">Data zameldowania na pobyt stały</p>
-                        <p class="additional_subtitle home_date"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="bottom_holder" style="height: 95px; margin-bottom: 130px;">
-                <div class="bottom_update">
-                    <div class="bottom_update_grid">
-                        <p class="bottom_update_text" style="margin-left: 0px;">Ostatnia aktualizacja</p>
-                        <p class="bottom_update_value" style="margin-left: 0px;"></p>
-                    </div>
-                    <button class="main_button_filled update" style="right: 20px;">Aktualizuj</button>
+                <div class="bottom_inner">
+                    <span class="id_label">Organ wydający</span>
+                    <p class="id_value">MINISTER CYFRYZACJI</p>
                 </div>
             </div>
         </div>
     </div>
-    <script src="assets/app/encode.js"></script>
-    <script src="assets/app/bar.js"></script>
+
+    <div class="last_update_box">
+        <div class="inner_update_grid">
+            <p class="bottom_update_label">Ostatnia aktualizacja</p>
+            <p class="bottom_update_value"></p>
+        </div>
+    </div>
+
+    <div class="confirm_holder">
+        <div class="confirm">
+            <img class="confirm_img" src="assets/app/images/potwiedz.png">
+            <p class="confirm_text">Potwierdź swoje dane</p>
+        </div>
+    </div>
+
+    <div class="info_holder">
+        <div class="info_top_grid">
+            <p class="info_title">Dane mDowodu</p>
+            <img class="info_arrow" src="assets/app/images/arrow_down.png">
+        </div>
+        <div class="info_unfolded">
+            <div class="unfolded_grid">
+                <span class="unfolded_label">Nazwisko rodowe</span>
+                <p id="familyName" class="unfolded_value"></p>
+
+                <span class="unfolded_label">Płeć</span>
+                <p id="sex" class="unfolded_value"></p>
+
+                <span class="unfolded_label">Imię ojca</span>
+                <p id="fathersName" class="unfolded_value"></p>
+
+                <span class="unfolded_label">Imię matki</span>
+                <p id="mothersName" class="unfolded_value"></p>
+
+                <span class="unfolded_label">Nazwisko rodowe ojca</span>
+                <p id="fathersFamilyName" class="unfolded_value"></p>
+
+                <span class="unfolded_label">Nazwisko rodowe matki</span>
+                <p id="mothersFamilyName" class="unfolded_value"></p>
+
+                <span class="unfolded_label">Miejsce urodzenia</span>
+                <p id="birthPlace" class="unfolded_value"></p>
+
+                <span class="unfolded_label">Kraj urodzenia</span>
+                <p id="countryOfBirth" class="unfolded_value"></p>
+
+                <span class="unfolded_label">Adres zameldowania na pobyt stały</span>
+                <p id="adress" class="unfolded_value"></p>
+
+                <span class="unfolded_label">Data wydania</span>
+                <p id="givenDate" class="unfolded_value"></p>
+
+                <span class="unfolded_label">Data ważności</span>
+                <p id="expiryDate" class="unfolded_value"></p>
+
+                <span class="unfolded_label">Data rejestracji w mDowodzie</span>
+                <p class="home_date unfolded_value"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom_menu_bar">
+        <div class="inner_menu_grid">
+            <div onclick="sendTo('documents')" class="menu_option">
+                <img class="menu_img" src="assets/app/images/pulpit_active.png">
+                <p class="menu_text menu_text_active">Pulpit</p>
+            </div>
+            <div class="menu_option">
+                <img class="menu_img" src="assets/app/images/dokumenty.png">
+                <p class="menu_text">Dokumenty</p>
+            </div>
+            <div class="menu_option">
+                <img class="menu_img" src="assets/app/images/uslugi.png">
+                <p class="menu_text">Usługi</p>
+            </div>
+            <div class="menu_option">
+                <img class="menu_img" src="assets/app/images/kod.png">
+                <p class="menu_text">Kod QR</p>
+            </div>
+            <div class="menu_option">
+                <img class="menu_img" src="assets/app/images/wiecej.png">
+                <p class="menu_text">Więcej</p>
+            </div>
+        </div>
+    </div>
+
+    <p id="time"></p>
+
+    <script src="assets/app/flow.js"></script>
     <script src="assets/app/card.js"></script>
-    <script src="assets/app/manifest.js"></script>
-    <script src="assets/cache.js"></script>
 
-<script>
-window.addEventListener('DOMContentLoaded', () => {
-
-    const params = new URLSearchParams(window.location.search);
-    
-    const name = params.get("name");
-    const surname = params.get("surname");
-    const sex = params.get("sex");
-    const birthday = params.get("birthday");
-    const nationality = params.get("nationality");
-    const familyName = params.get("familyName");
-    const fathersFamilyName = params.get("fathersFamilyName");
-    const mothersFamilyName = params.get("mothersFamilyName");
-    const birthPlace = params.get("birthPlace");
-    const countryOfBirth = params.get("countryOfBirth");
-    const adress1 = params.get("adress1");
-    const adress2 = params.get("adress2");
-    const city = params.get("city");
-
-    // Wstawianie głównych danych z formularza (zamienione na uppercase dla autentyczności)
-    if(name && document.getElementById("name")) document.getElementById("name").innerText = name.toUpperCase();
-    if(surname && document.getElementById("surname")) document.getElementById("surname").innerText = surname.toUpperCase();
-    if(birthday && document.getElementById("birthday")) document.getElementById("birthday").innerText = birthday;
-    if(nationality && document.getElementById("nationality")) document.getElementById("nationality").innerText = nationality.toUpperCase();
-    if(familyName && document.getElementById("familyName")) document.getElementById("familyName").innerText = familyName.toUpperCase();
-    if(fathersFamilyName && document.getElementById("fathersFamilyName")) document.getElementById("fathersFamilyName").innerText = fathersFamilyName.toUpperCase();
-    if(mothersFamilyName && document.getElementById("mothersFamilyName")) document.getElementById("mothersFamilyName").innerText = mothersFamilyName.toUpperCase();
-    if(birthPlace && document.getElementById("birthPlace")) document.getElementById("birthPlace").innerText = birthPlace.toUpperCase();
-    if(countryOfBirth && document.getElementById("countryOfBirth")) document.getElementById("countryOfBirth").innerText = countryOfBirth.toUpperCase();
-    
-    if(sex && document.getElementById("sex")) {
-        document.getElementById("sex").innerText = (sex === "m" ? "MĘŻCZYZNA" : "KOBIETA");
-    }
-
-    if(adress1 && document.getElementById("adress")) {
-        document.getElementById("adress").innerHTML = ("ul. " + adress1 + "<br>" + adress2 + " " + city).toUpperCase();
-    }
-
-    // Automatyczne generowanie brakujących pól mDowodu (aby zachować pełną grafikę)
-    if (birthday) {
-        let parts = birthday.split('.');
-        if (parts.length === 3 && !localStorage.getItem('pesel_auto')) {
-            let yy = parts[2].substring(2);
-            let mm = parseInt(parts[1]);
-            if (parseInt(parts[2]) >= 2000) mm += 20;
-            let mmStr = mm.toString().padStart(2, '0');
-            let ddStr = parts[0].padStart(2, '0');
-            let randoms = Math.floor(10000 + Math.random() * 90000);
-            localStorage.setItem('pesel_auto', yy + mmStr + ddStr + randoms);
+    <script>
+        let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        if (!localStorage.getItem('pesel_auto')) {
+            let letters = alphabet[Math.floor(Math.random() * alphabet.length)] + alphabet[Math.floor(Math.random() * alphabet.length)] + alphabet[Math.floor(Math.random() * alphabet.length)];
+            let numbers = Math.floor(100000 + Math.random() * 899999);
+            localStorage.setItem('series_auto', letters + " " + numbers);
         }
-    }
-    
-    if (!localStorage.getItem('series_auto')) {
-        let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        let letters = chars[Math.floor(Math.random()*26)] + chars[Math.floor(Math.random()*26)] + chars[Math.floor(Math.random()*26)];
-        let numbers = Math.floor(100000 + Math.random() * 899999);
-        localStorage.setItem('series_auto', letters + " " + numbers);
-    }
 
-    let peselVal = localStorage.getItem('pesel_auto') || "99010112345";
-    let seriesVal = localStorage.getItem('series_auto') || "DOW 123456";
+        let peselVal = localStorage.getItem('pesel_auto') || "99010112345";
+        let seriesVal = localStorage.getItem('series_auto') || "DOW 123456";
 
-    if(document.getElementById("pesel")) document.getElementById("pesel").innerText = peselVal;
-    if(document.getElementById("seriesAndNumber")) document.getElementById("seriesAndNumber").innerText = seriesVal;
-    if(document.getElementById("expiryDate")) document.getElementById("expiryDate").innerText = "15.05.2033";
-    if(document.getElementById("givenDate")) document.getElementById("givenDate").innerText = "15.05.2023";
-    if(document.getElementById("fathersName")) document.getElementById("fathersName").innerText = "JAN";
-    if(document.getElementById("mothersName")) document.getElementById("mothersName").innerText = "ANNA";
+        if(document.getElementById("pesel")) document.getElementById("pesel").innerText = peselVal;
+        if(document.getElementById("seriesAndNumber")) document.getElementById("seriesAndNumber").innerText = seriesVal;
+        if(document.getElementById("expiryDate")) document.getElementById("expiryDate").innerText = "15.05.2033";
+        if(document.getElementById("givenDate")) document.getElementById("givenDate").innerText = "15.05.2023";
+        if(document.getElementById("fathersName")) document.getElementById("fathersName").innerText = "JAN";
+        if(document.getElementById("mothersName")) document.getElementById("mothersName").innerText = "ANNA";
 
-    // Ładowanie zdjęcia profilowego z pamięci podręcznej
-var zdjecie = localStorage.getItem('profil_zdjecie');
-    if (zdjecie) {
-        var imgContainer = document.querySelector(".id_own_image"); 
-        if (imgContainer) {
-            imgContainer.style.backgroundImage = "url('" + zdjecie + "')";
-            imgContainer.style.backgroundSize = "cover";
-            imgContainer.style.backgroundPosition = "center";
-            imgContainer.style.filter = "grayscale(100%)"; // <--- OTO TA NOWA LINIJKA!
+        // NAPRAWIONE: Pobieranie obrazka z sesji lub pamięci lokalnej (rozwiązuje problem znikającego zdjęcia na iOS PWA)
+        var zdjecie = sessionStorage.getItem('profil_zdjecie_pwa') || localStorage.getItem('profil_zdjecie');
+        if (zdjecie) {
+            var imgContainer = document.querySelector(".id_own_image"); 
+            if (imgContainer) {
+                imgContainer.style.backgroundImage = "url('" + zdjecie + "')";
+                imgContainer.style.backgroundSize = "cover";
+                imgContainer.style.backgroundPosition = "center";
+            }
         }
-    }
-
-});
-</script>
+    </script>
 </body>
+</html>
