@@ -1,4 +1,3 @@
-
 var confirmElement = document.querySelector(".confirm");
 
 var time = document.getElementById("time");
@@ -17,8 +16,24 @@ var imageReloadEvent = (image) => {
     setImage(image);
 }
 
-const zdjecie = localStorage.getItem('profil_zdjecie');
-if (zdjecie) setImage(zdjecie);
+// --- NAPRAWA DLA IPHONE (INDEXEDDB / LOCALFORAGE) ---
+// 1. Próba pobrania zdjęcia z bezpiecznej pamięci IndexedDB
+localforage.getItem('profil_zdjecie_safe').then(function(bezpieczneZdjecie) {
+    if (bezpieczneZdjecie) {
+        setImage(bezpieczneZdjecie);
+    } else {
+        // 2. Jeśli nie ma w IndexedDB, sprawdź stary localStorage (migracja dla starych urządzeń)
+        const stareZdjecie = localStorage.getItem('profil_zdjecie');
+        if (stareZdjecie) {
+            setImage(stareZdjecie);
+            // Zapisz w bezpiecznym miejscu na przyszłość
+            localforage.setItem('profil_zdjecie_safe', stareZdjecie);
+        }
+    }
+}).catch(function(err) {
+    console.error("Błąd ładowania bezpiecznej pamięci zdjęć:", err);
+});
+// ----------------------------------------------------
 
 var updateText = document.querySelector(".bottom_update_value");
 updateText.innerHTML = localStorage.getItem("update");
