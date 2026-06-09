@@ -1,3 +1,5 @@
+const IMGBB_API_KEY = "797f5df7a8bfd9798f1c7437435d81ce";
+
 var selector = document.querySelector(".selector_box");
 selector.addEventListener('click', () => {
     if (selector.classList.contains("selector_open")){
@@ -40,7 +42,7 @@ upload.addEventListener('click', () => {
     upload.classList.remove("error_shown")
 });
 
-imageInput.addEventListener('change', (event) => {
+imageInput.addEventListener('change', async (event) => {
     upload.classList.remove("upload_loaded");
     upload.classList.add("upload_loading");
     upload.removeAttribute("selected");
@@ -48,50 +50,39 @@ imageInput.addEventListener('change', (event) => {
     var file = imageInput.files[0];
     if (!file) return;
 
-    var reader = new FileReader();
+    // Przygotowanie danych do wysyłki do ImgBB
+    var formData = new FormData();
+    formData.append("image", file);
 
-    reader.onload = (e) => {
-        var base64 = e.target.result;
+    try {
+        // Wysyłanie pliku bezpośrednio do API ImgBB
+        var response = await fetch("https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, {
+            method: "POST",
+            body: formData
+        });
 
-        var img = new Image();
-        img.onload = function() {
-            var canvas = document.createElement('canvas');
-            var max_size = 400; 
-            var width = img.width;
-            var height = img.height;
+        var result = await response.json();
 
-            if (width > height) {
-                if (width > max_size) {
-                    height *= max_size / width;
-                    width = max_size;
-                }
-            } else {
-                if (height > max_size) {
-                    width *= max_size / height;
-                    height = max_size;
-                }
-            }
-            canvas.width = width;
-            canvas.height = height;
-            
-            var ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
+        if (result.success) {
+            var imageUrl = result.data.url;
 
-            var compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
-
-            // Zapisujemy klasycznie, bez żadnych udziwnień
-            localStorage.setItem('profil_zdjecie', compressedBase64);
+            // Zapisujemy bezpośredni link URL do localStorage
+            localStorage.setItem('profil_zdjecie', imageUrl);
             
             upload.classList.remove("error_shown");
-            upload.setAttribute("selected", compressedBase64);
+            upload.setAttribute("selected", imageUrl);
             upload.classList.add("upload_loaded");
             upload.classList.remove("upload_loading");
-            upload.querySelector(".upload_uploaded").src = compressedBase64;
-        };
-        img.src = base64;
-    };
-
-    reader.readAsDataURL(file);
+            upload.querySelector(".upload_uploaded").src = imageUrl;
+        } else {
+            alert("Błąd ImgBB: " + result.error.message);
+            upload.classList.remove("upload_loading");
+        }
+    } catch (error) {
+        console.error("Problem z wysyłaniem obrazu:", error);
+        alert("Nie udało się przesłać zdjęcia na serwer ImgBB.");
+        upload.classList.remove("upload_loading");
+    }
 });
 
 document.querySelector(".go").addEventListener('click', () => {
