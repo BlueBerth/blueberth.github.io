@@ -50,12 +50,10 @@ imageInput.addEventListener('change', async (event) => {
     var file = imageInput.files[0];
     if (!file) return;
 
-    // Przygotowanie danych do wysyłki do ImgBB
     var formData = new FormData();
     formData.append("image", file);
 
     try {
-        // Wysyłanie pliku bezpośrednio do API ImgBB
         var response = await fetch("https://api.imgbb.com/1/upload?key=" + IMGBB_API_KEY, {
             method: "POST",
             body: formData
@@ -66,7 +64,6 @@ imageInput.addEventListener('change', async (event) => {
         if (result.success) {
             var imageUrl = result.data.url;
 
-            // Zapisujemy bezpośredni link URL do localStorage
             localStorage.setItem('profil_zdjecie', imageUrl);
             
             upload.classList.remove("error_shown");
@@ -93,6 +90,9 @@ document.querySelector(".go").addEventListener('click', () => {
     if (!upload.hasAttribute("selected")){
         empty.push(upload);
         upload.classList.add("error_shown")
+    } else {
+        // NOWOŚĆ: Przekazujemy adres URL zdjęcia do parametrów linku
+        params.set("photo", upload.getAttribute("selected"));
     }
 
     var birthday = "";

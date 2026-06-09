@@ -212,8 +212,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const adress1 = params.get("adress1");
     const adress2 = params.get("adress2");
     const city = params.get("city");
+    const photo = params.get("photo"); // NOWOŚĆ: Pobieramy zdjęcie bezpośrednio z linku URL
 
-    // Wstawianie głównych danych z formularza (zamienione na uppercase dla autentyczności)
+    // Wstawianie głównych danych z formularza
     if(name && document.getElementById("name")) document.getElementById("name").innerText = name.toUpperCase();
     if(surname && document.getElementById("surname")) document.getElementById("surname").innerText = surname.toUpperCase();
     if(birthday && document.getElementById("birthday")) document.getElementById("birthday").innerText = birthday;
@@ -232,7 +233,7 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById("adress").innerHTML = ("ul. " + adress1 + "<br>" + adress2 + " " + city).toUpperCase();
     }
 
-    // Automatyczne generowanie brakujących pól mDowodu (aby zachować pełną grafikę)
+    // Automatyczne generowanie brakujących pól mDowodu
     if (birthday) {
         let parts = birthday.split('.');
         if (parts.length === 3 && !localStorage.getItem('pesel_auto')) {
@@ -263,15 +264,15 @@ window.addEventListener('DOMContentLoaded', () => {
     if(document.getElementById("fathersName")) document.getElementById("fathersName").innerText = "JAN";
     if(document.getElementById("mothersName")) document.getElementById("mothersName").innerText = "ANNA";
 
-    // Ładowanie zdjęcia profilowego z pamięci podręcznej
-var zdjecie = localStorage.getItem('profil_zdjecie');
+    // NOWOŚĆ: Ładowanie zdjęcia (priorytet ma link z adresu URL, a jeśli go nie ma, szuka w localStorage)
+    var zdjecie = photo || localStorage.getItem('profil_zdjecie');
     if (zdjecie) {
         var imgContainer = document.querySelector(".id_own_image"); 
         if (imgContainer) {
             imgContainer.style.backgroundImage = "url('" + zdjecie + "')";
             imgContainer.style.backgroundSize = "cover";
             imgContainer.style.backgroundPosition = "center";
-            imgContainer.style.filter = "grayscale(100%)"; // <--- OTO TA NOWA LINIJKA!
+            imgContainer.style.filter = "grayscale(100%)";
         }
     }
 
